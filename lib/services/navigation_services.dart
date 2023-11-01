@@ -1,8 +1,9 @@
+
 import 'package:my_projects/utils/common_exports.dart';
 
 class Routes {
-  static const String initializeExpensiveTrackerApp =
-      "/initializeExpensiveTrackerApp";
+  static const String expenses = "/expenses";
+  static const String initializeExpensiveTracker = "/initializeExpensiveTracker";
 }
 
 class NavigationServices {
@@ -13,9 +14,12 @@ class NavigationServices {
 
   Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case Routes.initializeExpensiveTrackerApp:
+      case Routes.initializeExpensiveTracker:
         return MaterialPageRoute(
             builder: (_) => const InitializeExpensiveTrackerApp());
+        case Routes.expenses:
+        return MaterialPageRoute(
+            builder: (_) => const Expenses());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

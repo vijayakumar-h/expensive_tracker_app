@@ -11,7 +11,7 @@ class ExpensiveTrackerApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: Routes.initializeExpensiveTrackerApp,
+      initialRoute: Routes.initializeExpensiveTracker,
       navigatorKey: NavigationServices.navigateKey,
       onGenerateRoute: NavigationServices().generateRoute,
     );
