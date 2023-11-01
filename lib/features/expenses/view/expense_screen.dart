@@ -32,13 +32,7 @@ class _ExpensesState extends State<Expenses> {
   void openAddExpensesOverlay() {
     showModalBottomSheet(
       context: context,
-      builder: (buildContext) => const SizedBox(
-        height: 60,
-        width: double.infinity,
-        child: Center(
-          child: Text('Modal bottom sheet'),
-        ),
-      ),
+      builder: (ctx) => const NewExpenseScreen(),
     );
   }
 
