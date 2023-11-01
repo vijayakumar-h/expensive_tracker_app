@@ -1,4 +1,7 @@
-import 'package:my_projects/utils/common_exports.dart';
+
+
+
+import 'package:expensive_tracker_app/utils/common_exports.dart';
 
 void main() {
   runApp(const ExpensiveTrackerApp());

@@ -1,9 +1,9 @@
-
-import 'package:my_projects/utils/common_exports.dart';
+import 'package:expensive_tracker_app/utils/common_exports.dart';
 
 class Routes {
   static const String expenses = "/expenses";
-  static const String initializeExpensiveTracker = "/initializeExpensiveTracker";
+  static const String initializeExpensiveTracker =
+      "/initializeExpensiveTracker";
 }
 
 class NavigationServices {
@@ -17,9 +17,8 @@ class NavigationServices {
       case Routes.initializeExpensiveTracker:
         return MaterialPageRoute(
             builder: (_) => const InitializeExpensiveTrackerApp());
-        case Routes.expenses:
-        return MaterialPageRoute(
-            builder: (_) => const Expenses());
+      case Routes.expenses:
+        return MaterialPageRoute(builder: (_) => const Expenses());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
