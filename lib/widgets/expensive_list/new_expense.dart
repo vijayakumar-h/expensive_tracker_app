@@ -1,7 +1,9 @@
 import 'package:expensive_tracker_app/utils/common_exports.dart';
 
 class NewExpenseScreen extends StatefulWidget {
-  const NewExpenseScreen({super.key});
+  const NewExpenseScreen({super.key, required this.onAddExpense});
+
+  final void Function(Expense expense) onAddExpense;
 
   @override
   State<NewExpenseScreen> createState() => _NewExpenseScreenState();
@@ -49,8 +51,17 @@ class _NewExpenseScreenState extends State<NewExpenseScreen> {
           ],
         ),
       );
-      return ;
+      return;
     }
+    widget.onAddExpense(
+      Expense(
+        title: titleController.text,
+        amount: enterAmount,
+        date: selectDate!,
+        category: selectCategory,
+      ),
+    );
+    Navigator.pop(context);
   }
 
   @override
@@ -63,7 +74,7 @@ class _NewExpenseScreenState extends State<NewExpenseScreen> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.fromLTRB(16, 48, 16, 16),
       child: Column(
         children: [
           TextField(
