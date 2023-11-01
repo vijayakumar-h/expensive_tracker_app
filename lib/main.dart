@@ -1,6 +1,3 @@
-
-
-
 import 'package:expensive_tracker_app/utils/common_exports.dart';
 
 void main() {
@@ -14,8 +11,9 @@ class ExpensiveTrackerApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: Routes.initializeExpensiveTracker,
+      theme: ThemeData(useMaterial3: true),
       navigatorKey: NavigationServices.navigateKey,
+      initialRoute: Routes.initializeExpensiveTracker,
       onGenerateRoute: NavigationServices().generateRoute,
     );
   }
