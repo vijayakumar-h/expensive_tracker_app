@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:my_projects/utils/common_exports.dart';
 
 void main() {
   runApp(const ExpensiveTrackerApp());
@@ -9,25 +9,11 @@ class ExpensiveTrackerApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Home(),
-    );
-  }
-}
-
-class Home extends StatelessWidget {
-  const Home({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Expensive tracker App"),
-      ),
-      body: const Center(
-        child: Text("Text"),
-      ),
+      initialRoute: Routes.initializeExpensiveTrackerApp,
+      navigatorKey: NavigationServices.navigateKey,
+      onGenerateRoute: NavigationServices().generateRoute,
     );
   }
 }
