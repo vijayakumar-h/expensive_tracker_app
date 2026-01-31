@@ -27,7 +27,8 @@ class ExpenseItem extends StatelessWidget {
                     ),
                   ),
                   Icon(
-                    categoryIcons[expense.category],
+                    IconData(expense.category.iconCode,
+                        fontFamily: 'MaterialIcons'),
                     size: 32,
                   ),
                 ],

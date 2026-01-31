@@ -1,4 +1,5 @@
 import 'package:expensive_tracker_app/utils/common_exports.dart';
+import 'package:expensive_tracker_app/features/chart/chart_screen.dart';
 
 class Expenses extends StatefulWidget {
   const Expenses({super.key});
@@ -8,14 +9,7 @@ class Expenses extends StatefulWidget {
 }
 
 class _ExpensesState extends State<Expenses> {
-  List<Expense> expenseList = [
-    Expense(
-      title: "Flutter Course",
-      amount: 20.01,
-      date: DateTime.now(),
-      category: Category.work,
-    ),
-  ];
+  List<Expense> expenseList = [];
 
   @override
   void initState() {
@@ -27,14 +21,14 @@ class _ExpensesState extends State<Expenses> {
       DraggableScrollableController();
 
   void addExpenses(Expense expense) async {
-    await appController.storeFromHive(expense.id, expense.toMap());
+    await appController.saveExpense(expense.id, expense.toMap());
     setState(() {
       expenseList.insert(0, expense);
     });
   }
 
   void removeExpenses(Expense expense) {
-    appController.deleteFromHive(expense.id);
+    appController.removeExpense(expense.id);
     final expenseIndex = expenseList.indexOf(expense);
     setState(() {
       expenseList.remove(expense);
@@ -47,12 +41,28 @@ class _ExpensesState extends State<Expenses> {
         action: SnackBarAction(
           label: "Undo",
           onPressed: () {
-            appController.storeFromHive(expense.id, expense.toMap());
+            appController.saveExpense(expense.id, expense.toMap());
             setState(() {
               expenseList.insert(expenseIndex, expense);
             });
           },
         ),
+      ),
+    );
+  }
+
+  void _openAddExpenseOverlay({Expense? expense}) {
+    appController.draggableBottomSheet(
+      context: context,
+      maxChildSize: 0.9,
+      minChildSize: 0.65,
+      initialChildSize: 0.65,
+      draggableController: draggableController,
+      builder: (context, scrollController) => NewExpenseScreen(
+        onAddExpense: addExpenses,
+        scrollController: scrollController,
+        draggableController: draggableController,
+        existingExpense: expense,
       ),
     );
   }
@@ -66,70 +76,82 @@ class _ExpensesState extends State<Expenses> {
       mainContent = ExpenseList(
         expenses: expenseList,
         onRemoveExpense: removeExpenses,
+        onEditExpense: (expense) => _openAddExpenseOverlay(expense: expense),
       );
     }
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        automaticallyImplyLeading: false,
-        title: const Text("Tracker"),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: InkWell(
-              onTap: () => appController.draggableBottomSheet(
-                context: context,
-                maxChildSize: 0.9,
-                minChildSize: 0.65,
-                initialChildSize: 0.65,
-                draggableController: draggableController,
-                builder: (context, scrollController) => NewExpenseScreen(
-                  onAddExpense: addExpenses,
-                  scrollController: scrollController,
-                  draggableController: draggableController,
-                ),
-              ),
-              borderRadius: BorderRadius.circular(30),
-              child: Container(
-                height: 48,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(30),
-                  border: Border.all(
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: false,
+          automaticallyImplyLeading: false,
+          title: const Text("Tracker"),
+          foregroundColor: Theme.of(context).primaryColor,
+          bottom: TabBar(
+            splashFactory: NoSplash.splashFactory,
+            dividerColor: Colors.transparent,
+            indicatorColor: Theme.of(context).primaryColor,
+            labelColor: Theme.of(context).primaryColor,
+            unselectedLabelColor: Theme.of(context).textTheme.bodyMedium?.color,
+            tabs: const [
+              Tab(text: "Transactions", icon: Icon(Icons.list)),
+              Tab(text: "Reports", icon: Icon(Icons.bar_chart)),
+            ],
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: InkWell(
+                onTap: () => _openAddExpenseOverlay(),
+                borderRadius: BorderRadius.circular(30),
+                child: Container(
+                  height: 48,
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  decoration: BoxDecoration(
                     color:
-                        Theme.of(context).primaryColor.withValues(alpha: 0.2),
-                  ),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.add_rounded,
-                      size: 28,
-                      color: Theme.of(context).primaryColor,
+                        Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(
+                      color:
+                          Theme.of(context).primaryColor.withValues(alpha: 0.2),
                     ),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Add',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.add_rounded,
+                        size: 28,
                         color: Theme.of(context).primaryColor,
                       ),
-                    ),
-                  ],
+                      const SizedBox(width: 8),
+                      Text(
+                        'Add',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          const Text("The charts"),
-          Expanded(child: mainContent),
-        ],
+          ],
+        ),
+        body: TabBarView(
+          children: [
+            // Tab 1: Transaction List
+            Column(
+              children: [
+                Expanded(child: mainContent),
+              ],
+            ),
+            // Tab 2: Reports / Charts
+            ChartScreen(expenses: expenseList),
+          ],
+        ),
       ),
     );
   }

@@ -4,28 +4,68 @@ import 'package:intl/intl.dart';
 final formatter = DateFormat.yMd();
 const uuid = Uuid();
 
-enum Category { food, travel, leisure, work }
+enum TransactionType { income, expense }
 
-const categoryIcons = {
-  Category.food: Icons.lunch_dining,
-  Category.travel: Icons.flight_takeoff_sharp,
-  Category.leisure: Icons.movie,
-  Category.work: Icons.work,
-};
+class CategoryModel {
+  final String id;
+  final String name;
+  final int iconCode; // Store IconData.codePoint
+  final TransactionType type;
+
+  CategoryModel({
+    required this.name,
+    required this.iconCode,
+    required this.type,
+    String? id,
+  }) : id = id ?? uuid.v4();
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'iconCode': iconCode,
+      'type': type.name,
+    };
+  }
+
+  factory CategoryModel.fromMap(Map<dynamic, dynamic> map) {
+    return CategoryModel(
+      id: map['id'],
+      name: map['name'],
+      iconCode: map['iconCode'],
+      type: TransactionType.values.firstWhere(
+        (e) => e.name == map['type'],
+        orElse: () => TransactionType.expense,
+      ),
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is CategoryModel && other.id == id;
+  }
+
+  @override
+  int get hashCode => id.hashCode;
+}
 
 class Expense {
   final String id;
   final String title;
   final double amount;
   final DateTime date;
-  final Category category;
+  final CategoryModel category;
+  final TransactionType type;
 
   Expense({
     required this.title,
     required this.amount,
     required this.date,
     required this.category,
-  }) : id = uuid.v4();
+    required this.type,
+    String? id,
+  }) : id = id ?? uuid.v4();
 
   String get formattedDate => formatter.format(date);
 
@@ -35,18 +75,21 @@ class Expense {
       'title': title,
       'amount': amount,
       'date': date.toIso8601String(),
-      'category': category.name,
+      'category': category.toMap(),
+      'type': type.name,
     };
   }
 
   factory Expense.fromMap(Map<dynamic, dynamic> map) {
     return Expense(
-      title: map['title'] as String,
-      amount: map['amount'] as double,
-      date: DateTime.parse(map['date'] as String),
-      category: Category.values.firstWhere(
-        (e) => e.name == map['category'],
-        orElse: () => Category.food,
+      id: map['id'],
+      title: map['title'],
+      amount: map['amount'],
+      date: DateTime.parse(map['date']),
+      category: CategoryModel.fromMap(map['category']),
+      type: TransactionType.values.firstWhere(
+        (e) => e.name == map['type'],
+        orElse: () => TransactionType.expense,
       ),
     );
   }

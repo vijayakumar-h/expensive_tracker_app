@@ -1,10 +1,113 @@
 import 'package:expensive_tracker_app/utils/common_exports.dart';
 
-class AppController with AppMixin, HiveServices {
+class AppController with ChangeNotifier, AppMixin, HiveServices {
   factory AppController() => _singleton;
   static final AppController _singleton = AppController._internal();
 
   AppController._internal();
+
+  List<Expense> expenses = [];
+  List<CategoryModel> availableCategories = [
+    CategoryModel(
+      name: 'Food',
+      iconCode: Icons.lunch_dining.codePoint,
+      type: TransactionType.expense,
+      id: 'food',
+    ),
+    CategoryModel(
+      name: 'Travel',
+      iconCode: Icons.flight_takeoff_sharp.codePoint,
+      type: TransactionType.expense,
+      id: 'travel',
+    ),
+    CategoryModel(
+      name: 'Leisure',
+      iconCode: Icons.movie.codePoint,
+      type: TransactionType.expense,
+      id: 'leisure',
+    ),
+    CategoryModel(
+      name: 'Work',
+      iconCode: Icons.work.codePoint,
+      type: TransactionType.expense,
+      id: 'work',
+    ),
+    CategoryModel(
+      name: 'Salary',
+      iconCode: Icons.attach_money.codePoint,
+      type: TransactionType.income,
+      id: 'salary',
+    ),
+  ];
+
+  Future<void> initializeHive() async {
+    await super.initializeHive();
+    expenses = getExpensesFromHive();
+
+    // Load categories
+    final categoriesMap =
+        getFromHive('categories', defaultValue: {}) as Map<dynamic, dynamic>;
+    if (categoriesMap.isNotEmpty) {
+      availableCategories = categoriesMap.values
+          .map((c) =>
+              CategoryModel.fromMap(Map<dynamic, dynamic>.from(c as Map)))
+          .toList();
+    } else {
+      // First run: persist defaults
+      await _saveCategoriesToHive();
+    }
+
+    notifyListeners();
+  }
+
+  Future<void> _saveCategoriesToHive() async {
+    final Map<String, dynamic> categoriesMap = {
+      for (var c in availableCategories) c.id: c.toMap()
+    };
+    await storeFromHive('categories', categoriesMap);
+  }
+
+  Future<void> addCategory(CategoryModel category) async {
+    availableCategories.add(category);
+    await _saveCategoriesToHive();
+    notifyListeners();
+  }
+
+  List<Expense> getExpensesFromHive() {
+    final expensesMap =
+        getFromHive('expenses', defaultValue: {}) as Map<dynamic, dynamic>;
+    if (expensesMap.isEmpty) return [];
+
+    return expensesMap.values
+        .map((e) => Expense.fromMap(Map<dynamic, dynamic>.from(e as Map)))
+        .toList();
+  }
+
+  // Renamed to avoid incorrect override and provide specific functionality
+  Future<void> saveExpense(String key, Map<String, dynamic> value) async {
+    final expensesMap =
+        getFromHive('expenses', defaultValue: {}) as Map<dynamic, dynamic>;
+    // Create a mutable copy
+    final newMap = Map<dynamic, dynamic>.from(expensesMap);
+    newMap[key] = value;
+
+    await storeFromHive('expenses', newMap);
+    expenses = getExpensesFromHive();
+    notifyListeners();
+  }
+
+  // Renamed to avoid incorrect override
+  Future<void> removeExpense(String key) async {
+    final expensesMap =
+        getFromHive('expenses', defaultValue: {}) as Map<dynamic, dynamic>;
+    // Create a mutable copy
+    final newMap = Map<dynamic, dynamic>.from(expensesMap);
+    newMap.remove(key);
+
+    await storeFromHive('expenses', newMap);
+    expenses = getExpensesFromHive();
+    notifyListeners();
+  }
 
   set setAppTheme(ThemeMode themeMode) {
     appController.storeFromHive('themeValue', themeMode.name);
