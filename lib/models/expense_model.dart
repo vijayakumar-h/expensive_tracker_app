@@ -38,4 +38,16 @@ class Expense {
       'category': category.name,
     };
   }
+
+  factory Expense.fromMap(Map<dynamic, dynamic> map) {
+    return Expense(
+      title: map['title'] as String,
+      amount: map['amount'] as double,
+      date: DateTime.parse(map['date'] as String),
+      category: Category.values.firstWhere(
+        (e) => e.name == map['category'],
+        orElse: () => Category.food,
+      ),
+    );
+  }
 }

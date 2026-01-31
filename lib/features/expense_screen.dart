@@ -17,23 +17,14 @@ class _ExpensesState extends State<Expenses> {
     ),
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    expenseList = appController.expenses;
+  }
+
   final DraggableScrollableController draggableController =
       DraggableScrollableController();
-
-  void openAddExpensesOverlay() {
-    appController.draggableBottomSheet(
-      context: context,
-      maxChildSize: 0.75,
-      minChildSize: 0.35,
-      initialChildSize: 0.35,
-      draggableController: draggableController,
-      builder: (context, scrollController) => NewExpenseScreen(
-        onAddExpense: addExpenses,
-        scrollController: scrollController,
-        draggableController: draggableController,
-      ),
-    );
-  }
 
   void addExpenses(Expense expense) async {
     await appController.storeFromHive(expense.id, expense.toMap());
@@ -43,6 +34,7 @@ class _ExpensesState extends State<Expenses> {
   }
 
   void removeExpenses(Expense expense) {
+    appController.deleteFromHive(expense.id);
     final expenseIndex = expenseList.indexOf(expense);
     setState(() {
       expenseList.remove(expense);
@@ -55,6 +47,7 @@ class _ExpensesState extends State<Expenses> {
         action: SnackBarAction(
           label: "Undo",
           onPressed: () {
+            appController.storeFromHive(expense.id, expense.toMap());
             setState(() {
               expenseList.insert(expenseIndex, expense);
             });
@@ -79,11 +72,41 @@ class _ExpensesState extends State<Expenses> {
       appBar: AppBar(
         centerTitle: false,
         automaticallyImplyLeading: false,
-        title: const Text("Flutter ExpenseTracker"),
+        title: const Text("Expense Tracker"),
         actions: [
-          IconButton(
-            onPressed: openAddExpensesOverlay,
-            icon: const Icon(Icons.add),
+          TextButton(
+            style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.all(
+                AppTheme().light.primaryColor.withValues(alpha: 0.4),
+              ),
+            ),
+            onPressed: () => appController.draggableBottomSheet(
+              context: context,
+              maxChildSize: 0.75,
+              minChildSize: 0.35,
+              initialChildSize: 0.35,
+              draggableController: draggableController,
+              builder: (context, scrollController) => NewExpenseScreen(
+                onAddExpense: addExpenses,
+                scrollController: scrollController,
+                draggableController: draggableController,
+              ),
+            ),
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.add,
+                  size: 28,
+                ),
+                Text(
+                  'Add',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
           )
         ],
       ),

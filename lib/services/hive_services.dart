@@ -27,6 +27,11 @@ mixin HiveServices {
     }
   }
 
+  List<Expense> get expenses => _expensiveTrackerBox.values
+      .whereType<Map<dynamic, dynamic>>()
+      .map((e) => Expense.fromMap(Map<String, dynamic>.from(e)))
+      .toList();
+
   Future<void> initializeHive() async {
     await _initializeHive();
   }
