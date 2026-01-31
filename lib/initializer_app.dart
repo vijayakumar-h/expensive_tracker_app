@@ -13,10 +13,12 @@ class _InitializerAppState extends State<InitializerApp> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((duration) {
       Future.delayed(Duration(milliseconds: 800), () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Expenses()),
-        );
+        if (mounted) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Expenses()),
+          );
+        }
       });
     });
   }

@@ -13,12 +13,9 @@ class AppTheme {
   static const Color success = Color(0xFF43a017);
   static const Color _blackBG = Color(0XFF0E0E0F);
   static const Color _secondaryColor = _primaryColor;
-  static const Color _errorColor = Color(0XFFCC2708);
   static const Color _lightGrayBG = Color(0XFFE5E4E6);
-  static const Color _darkGreyBG = Color(0xFF2D2C2F);
   static const Color _primaryColor = Color(0xFF9761FF);
   static const Color mediumColor = Color(0XFFCAAEFF);
-  static const Color _lightColor = Color(0XFFEBE6CA);
   static const Color _mediumGrayBG = Color(0XFF969A9E);
   static const Color _neutralColor = Color(0XFFF5F5F5);
 
@@ -41,20 +38,18 @@ class AppTheme {
         hoverColor: _primary,
         shadowColor: _primary,
         primaryColor: _primary,
-        indicatorColor: _primary,
         primarySwatch: _mainAppColor,
         scaffoldBackgroundColor: _white,
         primaryColorDark: _mainAppColor,
         primaryColorLight: _mainAppColor,
         canvasColor: _white,
-        // _white.withOpacity(0.8),
         tooltipTheme: const TooltipThemeData(
             showDuration: Duration(seconds: 2),
             triggerMode: TooltipTriggerMode.tap,
             textStyle: TextStyle(color: _primary),
             margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
             padding: EdgeInsets.all(8)),
-        dialogTheme: DialogThemeData(backgroundColor: _white.withOpacity(0.8)),
+        dialogTheme: DialogThemeData(backgroundColor: _white.withValues(alpha: 0.8)),
         fontFamily: "Poppins",
         bottomSheetTheme: const BottomSheetThemeData(backgroundColor: _white),
         textTheme: const TextTheme(
@@ -134,7 +129,7 @@ class AppTheme {
         cardTheme: CardThemeData(
           elevation: 0,
           margin: EdgeInsets.zero,
-          color: _primary.withOpacity(0.04),
+          color: _primary.withValues(alpha: 0.04),
           shape: const ContinuousRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(4)),
             side: BorderSide(width: 0.5, color: _primary),
@@ -145,7 +140,7 @@ class AppTheme {
         progressIndicatorTheme:
             const ProgressIndicatorThemeData(color: _primary),
         scrollbarTheme: ScrollbarThemeData(
-          thumbColor: WidgetStatePropertyAll(_primary.withOpacity(0.5)),
+          thumbColor: WidgetStatePropertyAll(_primary.withValues(alpha: 0.5)),
         ),
         checkboxTheme: CheckboxThemeData(
           side: const BorderSide(color: _primary),
@@ -165,7 +160,7 @@ class AppTheme {
           dividerColor: _primary,
           indicatorColor: _primary,
           indicatorSize: TabBarIndicatorSize.label,
-          unselectedLabelColor: _primary.withOpacity(0.2),
+          unselectedLabelColor: _primary.withValues(alpha: 0.2),
           labelPadding: EdgeInsets.zero,
           labelStyle:
               const TextStyle(fontWeight: FontWeight.w400, fontSize: 16),
@@ -183,8 +178,8 @@ class AppTheme {
         ),
         textSelectionTheme: TextSelectionThemeData(
           cursorColor: _primary,
-          selectionColor: _primary.withOpacity(0.35),
-          selectionHandleColor: _primary.withOpacity(0.1),
+          selectionColor: _primary.withValues(alpha: 0.35),
+          selectionHandleColor: _primary.withValues(alpha: 0.1),
         ),
         elevatedButtonTheme: const ElevatedButtonThemeData(
           style: ButtonStyle(
@@ -193,7 +188,7 @@ class AppTheme {
         ),
         outlinedButtonTheme: OutlinedButtonThemeData(
           style: ButtonStyle(
-            overlayColor: WidgetStatePropertyAll(_primary.withOpacity(0.04)),
+            overlayColor: WidgetStatePropertyAll(_primary.withValues(alpha: 0.04)),
             foregroundColor: const WidgetStatePropertyAll(_primary),
             side: const WidgetStatePropertyAll(
               BorderSide(color: _primary),
@@ -268,7 +263,7 @@ class AppTheme {
           ),
         ),
         dividerTheme:
-            DividerThemeData(thickness: 0.5, color: _primary.withOpacity(0.8)),
+            DividerThemeData(thickness: 0.5, color: _primary.withValues(alpha: 0.8)),
         snackBarTheme: const SnackBarThemeData(
           elevation: 5,
           // backgroundColor: AppColors.saltPan,
@@ -326,9 +321,9 @@ class AppTheme {
         secondaryHeaderColor: _secondaryColor,
         unselectedWidgetColor: _secondaryColor,
         cupertinoOverrideTheme: darkCupertinoTheme,
-        splashColor: _primaryColor.withOpacity(0.1),
+        splashColor: _primaryColor.withValues(alpha: 0.1),
         actionIconTheme: const ActionIconThemeData(),
-        highlightColor: _primaryColor.withOpacity(0.1),
+        highlightColor: _primaryColor.withValues(alpha: 0.1),
         iconTheme: const IconThemeData(color: _white),
         drawerTheme: const DrawerThemeData(
           elevation: 0,
@@ -442,7 +437,7 @@ class AppTheme {
         listTileTheme: ListTileThemeData(
           iconColor: _white,
           selectedColor: _primaryColor,
-          selectedTileColor: _primaryColor.withOpacity(0.1),
+          selectedTileColor: _primaryColor.withValues(alpha: 0.1),
           titleTextStyle: const TextStyle(
             fontSize: 16,
             color: Colors.white,
@@ -522,20 +517,20 @@ class AppTheme {
         cardTheme: CardThemeData(
           elevation: 0,
           margin: EdgeInsets.zero,
-          color: _primaryColor.withOpacity(0.06),
+          color: _primaryColor.withValues(alpha: 0.06),
           shape: const ContinuousRectangleBorder(
             side: BorderSide(width: 0, color: _primaryColor),
             borderRadius: BorderRadius.all(Radius.circular(4)),
           ),
         ),
         dividerTheme: DividerThemeData(
-            thickness: 0.5, color: _primaryColor.withOpacity(0.4)),
+            thickness: 0.5, color: _primaryColor.withValues(alpha: 0.4)),
         tabBarTheme: TabBarThemeData(
           labelColor: _primary,
           dividerColor: _primary,
           indicatorColor: _primaryColor,
           indicatorSize: TabBarIndicatorSize.label,
-          unselectedLabelColor: _primary.withOpacity(0.2),
+          unselectedLabelColor: _primary.withValues(alpha: 0.2),
           labelPadding: EdgeInsets.zero,
           labelStyle: const TextStyle(
               fontWeight: FontWeight.w400, fontSize: 16, color: Colors.white),

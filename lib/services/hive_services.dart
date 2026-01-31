@@ -1,33 +1,33 @@
 import 'package:expensive_tracker_app/utils/common_exports.dart';
 
-
 mixin HiveServices {
-  late Box<dynamic> _photoEditorBox;
+  late Box<dynamic> _expensiveTrackerBox;
 
-  Future<void> _initializeHive() async =>
-      _photoEditorBox = await Hive.openBox<dynamic>('_photoEditorBox');
+  Future<void> _initializeHive() async => _expensiveTrackerBox =
+      await Hive.openBox<dynamic>('_expensiveTrackerBox');
 
   Future<void> storeFromHive(Object key, Object value) async {
     try {
-      await _photoEditorBox.put(key, value);
+      await _expensiveTrackerBox.put(key, value);
     } catch (e) {
       rethrow;
     }
   }
 
   dynamic getFromHive(Object key, {dynamic defaultValue}) =>
-      _photoEditorBox.get(key, defaultValue: defaultValue);
+      _expensiveTrackerBox.get(key, defaultValue: defaultValue);
 
-  bool containsKeyInHive(Object key) => _photoEditorBox.containsKey(key);
+  bool containsKeyInHive(Object key) => _expensiveTrackerBox.containsKey(key);
 
   Future<void> deleteFromHive(Object key) async {
     try {
-      await _photoEditorBox.delete(key);
+      await _expensiveTrackerBox.delete(key);
     } catch (e) {
       rethrow;
     }
   }
-  Future<void> initializeHive()async {
+
+  Future<void> initializeHive() async {
     await _initializeHive();
   }
 }
