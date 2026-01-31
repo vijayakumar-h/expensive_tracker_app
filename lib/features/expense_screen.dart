@@ -82,9 +82,9 @@ class _ExpensesState extends State<Expenses> {
             ),
             onPressed: () => appController.draggableBottomSheet(
               context: context,
-              maxChildSize: 0.75,
-              minChildSize: 0.35,
-              initialChildSize: 0.35,
+              maxChildSize: 0.9,
+              minChildSize: 0.65,
+              initialChildSize: 0.65,
               draggableController: draggableController,
               builder: (context, scrollController) => NewExpenseScreen(
                 onAddExpense: addExpenses,
