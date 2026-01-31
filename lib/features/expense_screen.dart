@@ -29,7 +29,7 @@ class _ExpensesState extends State<Expenses> {
   void addExpenses(Expense expense) async {
     await appController.storeFromHive(expense.id, expense.toMap());
     setState(() {
-      expenseList.add(expense);
+      expenseList.insert(0, expense);
     });
   }
 
@@ -72,42 +72,57 @@ class _ExpensesState extends State<Expenses> {
       appBar: AppBar(
         centerTitle: false,
         automaticallyImplyLeading: false,
-        title: const Text("Expense Tracker"),
+        title: const Text("Tracker"),
         actions: [
-          TextButton(
-            style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.all(
-                AppTheme().light.primaryColor.withValues(alpha: 0.4),
-              ),
-            ),
-            onPressed: () => appController.draggableBottomSheet(
-              context: context,
-              maxChildSize: 0.9,
-              minChildSize: 0.65,
-              initialChildSize: 0.65,
-              draggableController: draggableController,
-              builder: (context, scrollController) => NewExpenseScreen(
-                onAddExpense: addExpenses,
-                scrollController: scrollController,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: InkWell(
+              onTap: () => appController.draggableBottomSheet(
+                context: context,
+                maxChildSize: 0.9,
+                minChildSize: 0.65,
+                initialChildSize: 0.65,
                 draggableController: draggableController,
-              ),
-            ),
-            child: Row(
-              children: [
-                const Icon(
-                  Icons.add,
-                  size: 28,
+                builder: (context, scrollController) => NewExpenseScreen(
+                  onAddExpense: addExpenses,
+                  scrollController: scrollController,
+                  draggableController: draggableController,
                 ),
-                Text(
-                  'Add',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
+              ),
+              borderRadius: BorderRadius.circular(30),
+              child: Container(
+                height: 48,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(
+                    color:
+                        Theme.of(context).primaryColor.withValues(alpha: 0.2),
                   ),
                 ),
-              ],
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.add_rounded,
+                      size: 28,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Add',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          )
+          ),
         ],
       ),
       body: Column(
