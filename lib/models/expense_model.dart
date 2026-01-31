@@ -28,4 +28,14 @@ class Expense {
   }) : id = uuid.v4();
 
   String get formattedDate => formatter.format(date);
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'title': title,
+      'amount': amount,
+      'date': date.toIso8601String(),
+      'category': category.name,
+    };
+  }
 }

@@ -15,29 +15,28 @@ class _ExpensesState extends State<Expenses> {
       date: DateTime.now(),
       category: Category.work,
     ),
-    Expense(
-      title: "Cinema",
-      amount: 19.80,
-      date: DateTime.now(),
-      category: Category.travel,
-    ),
-    Expense(
-      title: "Chicken",
-      amount: 30.01,
-      date: DateTime.now(),
-      category: Category.food,
-    ),
   ];
 
+  final DraggableScrollableController draggableController =
+      DraggableScrollableController();
+
   void openAddExpensesOverlay() {
-    showModalBottomSheet(
-      isScrollControlled: true,
+    appController.draggableBottomSheet(
       context: context,
-      builder: (ctx) => NewExpenseScreen(onAddExpense: addExpenses),
+      maxChildSize: 0.75,
+      minChildSize: 0.35,
+      initialChildSize: 0.35,
+      draggableController: draggableController,
+      builder: (context, scrollController) => NewExpenseScreen(
+        onAddExpense: addExpenses,
+        scrollController: scrollController,
+        draggableController: draggableController,
+      ),
     );
   }
 
-  void addExpenses(Expense expense) {
+  void addExpenses(Expense expense) async {
+    await appController.storeFromHive(expense.id, expense.toMap());
     setState(() {
       expenseList.add(expense);
     });

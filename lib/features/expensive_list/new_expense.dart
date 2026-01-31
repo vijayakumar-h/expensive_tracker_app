@@ -1,19 +1,26 @@
 import 'package:expensive_tracker_app/utils/common_exports.dart';
 
 class NewExpenseScreen extends StatefulWidget {
-  const NewExpenseScreen({super.key, required this.onAddExpense});
-
+  final ScrollController scrollController;
   final void Function(Expense expense) onAddExpense;
+  final DraggableScrollableController draggableController;
+
+  const NewExpenseScreen({
+    super.key,
+    required this.onAddExpense,
+    required this.scrollController,
+    required this.draggableController,
+  });
 
   @override
   State<NewExpenseScreen> createState() => _NewExpenseScreenState();
 }
 
 class _NewExpenseScreenState extends State<NewExpenseScreen> {
+  DateTime? selectDate;
+  Category selectCategory = Category.food;
   final TextEditingController titleController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
-  DateTime? selectDate;
-  Category selectCategory = Category.leisure;
 
   void presentDatePicker() async {
     final now = DateTime.now();
@@ -72,91 +79,106 @@ class _NewExpenseScreenState extends State<NewExpenseScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 48, 16, 16),
-      child: Column(
-        children: [
-          TextField(
-            controller: titleController,
-            maxLength: 50,
-            decoration: const InputDecoration(
-              label: Text('Title'),
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.all(kAppPadding),
+        child: ListView(
+          controller: widget.scrollController,
+          children: [
+            TextField(
+              maxLength: 50,
+              controller: titleController,
+              onTap: () => widget.draggableController.animateTo(
+                0.75,
+                curve: Curves.easeOut,
+                duration: const Duration(milliseconds: 300),
+              ),
+              decoration: const InputDecoration(
+                label: Text('Title'),
+              ),
             ),
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: amountController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    prefixText: '\$',
-                    label: Text(
-                      "Amount",
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    onTap: () => widget.draggableController.animateTo(
+                      0.75,
+                      curve: Curves.easeOut,
+                      duration: const Duration(milliseconds: 300),
+                    ),
+                    controller: amountController,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      prefixText: '\$',
+                      label: Text("Amount"),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      selectDate == null
-                          ? "No data found"
-                          : formatter.format(selectDate!),
-                    ),
-                    IconButton(
-                      onPressed: presentDatePicker,
-                      icon: const Icon(
-                        Icons.calendar_month,
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        selectDate == null
+                            ? "No data found"
+                            : formatter.format(selectDate!),
                       ),
-                    ),
-                  ],
+                      IconButton(
+                        onPressed: presentDatePicker,
+                        icon: const Icon(
+                          Icons.calendar_month,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              DropdownButton(
-                  value: selectCategory,
-                  items: Category.values
-                      .map(
-                        (category) => DropdownMenuItem(
+              ],
+            ),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                DropdownButton(
+                    value: selectCategory,
+                    items: Category.values
+                        .map(
+                          (category) => DropdownMenuItem(
                             value: category,
                             child: Text(
                               category.name.toUpperCase(),
-                            )),
-                      )
-                      .toList(),
-                  onChanged: (value) {
-                    if (value == null) {
-                      return;
-                    }
-                    setState(() {
-                      selectCategory = value;
-                    });
-                  }),
-              const Spacer(),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text("Cancel"),
-              ),
-              ElevatedButton(
-                onPressed: submitExpenseDate,
-                child: const Text("Save Expenses"),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+                            ),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (value) {
+                      if (value == null) {
+                        return;
+                      }
+                      setState(() {
+                        selectCategory = value;
+                      });
+                    }),
+                const Spacer(),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: SecondaryButton(
+                    text: 'Cancel',
+                    onTap: () => Navigator.pop(context),
+                  ),
+                ),
+                SizedBox(width: kAppPadding),
+                Expanded(
+                  child: PrimaryButton(
+                    text: 'Save Expenses',
+                    onTap: submitExpenseDate,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
 }
