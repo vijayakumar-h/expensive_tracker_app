@@ -1,27 +1,37 @@
 import 'package:expensive_tracker_app/utils/common_exports.dart';
+import 'package:expensive_tracker_app/features/auth/auth_wrapper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Hive.init((await getApplicationDocumentsDirectory()).path);
-  final repository = AppRepository();
-  await repository.init();
+  
+  final appRepository = AppRepository();
+  await appRepository.init();
+  
+  final authRepository = MockAuthRepository();
   
   runApp(
-    RepositoryProvider.value(
-      value: repository,
+    MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<AppRepository>.value(value: appRepository),
+        RepositoryProvider<AuthRepository>.value(value: authRepository),
+      ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) => ThemeBloc(repository)..add(LoadTheme()),
+            create: (context) => ThemeBloc(appRepository)..add(LoadTheme()),
           ),
           BlocProvider(
-            create: (context) => ExpenseBloc(repository)..add(LoadExpenses()),
+            create: (context) => ExpenseBloc(appRepository)..add(LoadExpenses()),
           ),
           BlocProvider(
-            create: (context) => UserBloc(repository)..add(LoadUser()),
+            create: (context) => UserBloc(appRepository)..add(LoadUser()),
           ),
           BlocProvider(
-            create: (context) => SettingsBloc(repository)..add(LoadSettings()),
+            create: (context) => SettingsBloc(appRepository)..add(LoadSettings()),
+          ),
+          BlocProvider(
+            create: (context) => AuthBloc(authRepository)..add(AppStarted()),
           ),
         ],
         child: const ExpensiveTrackerApp(),
@@ -42,7 +52,7 @@ class ExpensiveTrackerApp extends StatelessWidget {
           themeMode: state.themeMode,
           theme: AppTheme().light,
           darkTheme: AppTheme().dark,
-          home: const InitializerApp(),
+          home: const AuthWrapper(),
         );
       },
     );

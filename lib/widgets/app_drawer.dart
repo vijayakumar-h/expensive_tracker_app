@@ -136,6 +136,14 @@ class AppDrawer extends StatelessWidget {
                     );
                   },
                 ),
+                ListTile(
+                  leading: const Icon(Icons.logout_rounded, color: Colors.redAccent),
+                  title: const Text('Logout', style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold)),
+                  onTap: () {
+                    Navigator.pop(context);
+                    context.read<AuthBloc>().add(LogoutRequested());
+                  },
+                ),
               ],
             ),
           ),
