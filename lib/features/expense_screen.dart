@@ -18,10 +18,10 @@ class _ExpensesState extends State<Expenses> {
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text("Expenses deleted"),
+        content: Text(context.l10n('expense_deleted')),
         duration: const Duration(seconds: 2),
         action: SnackBarAction(
-          label: "Undo",
+          label: context.l10n('undo'),
           onPressed: () {
             context.read<ExpenseBloc>().add(AddExpenseEvent(expense));
           },
@@ -68,13 +68,16 @@ class _ExpensesState extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<SettingsBloc, SettingsState>(
+      builder: (context, settingsState) {
         return DefaultTabController(
           length: 2,
           child: Scaffold(
+            drawer: const AppDrawer(),
             appBar: AppBar(
               centerTitle: false,
-              automaticallyImplyLeading: false,
-              title: const Text("Tracker"),
+              automaticallyImplyLeading: true,
+              title: Text(context.l10n('app_title')),
               foregroundColor: Theme.of(context).primaryColor,
               bottom: TabBar(
                 splashFactory: NoSplash.splashFactory,
@@ -82,9 +85,9 @@ class _ExpensesState extends State<Expenses> {
                 indicatorColor: Theme.of(context).primaryColor,
                 labelColor: Theme.of(context).primaryColor,
                 unselectedLabelColor: Theme.of(context).textTheme.bodyMedium?.color,
-                tabs: const [
-                  Tab(text: "Transactions", icon: Icon(Icons.list)),
-                  Tab(text: "Reports", icon: Icon(Icons.bar_chart)),
+                tabs: [
+                  Tab(text: context.l10n('transactions'), icon: const Icon(Icons.list)),
+                  Tab(text: context.l10n('reports'), icon: const Icon(Icons.bar_chart)),
                 ],
               ),
               actions: [
@@ -115,7 +118,7 @@ class _ExpensesState extends State<Expenses> {
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            'Add',
+                            context.l10n('add'),
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
@@ -133,8 +136,8 @@ class _ExpensesState extends State<Expenses> {
               builder: (context, state) {
                 final expenseList = state.expenses;
                 
-                Widget mainContent = const Center(
-                  child: Text("No expense found, Start adding some!"),
+                Widget mainContent = Center(
+                  child: Text(context.l10n('no_expense')),
                 );
                 
                 if (expenseList.isNotEmpty) {
@@ -159,5 +162,7 @@ class _ExpensesState extends State<Expenses> {
             ),
           ),
         );
+      },
+    );
   }
 }

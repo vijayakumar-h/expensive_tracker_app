@@ -133,206 +133,211 @@ class _NewExpenseScreenState extends State<NewExpenseScreen> {
     final theme = Theme.of(context);
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
 
-    return BlocBuilder<ExpenseBloc, ExpenseState>(
-      builder: (context, state) {
-        final currentCategories = state.categories
-            .where((c) => c.type == selectedType)
-            .toList();
+    return BlocBuilder<SettingsBloc, SettingsState>(
+      builder: (context, settingsState) {
+        return BlocBuilder<ExpenseBloc, ExpenseState>(
+          builder: (context, state) {
+            final currentCategories = state.categories
+                .where((c) => c.type == selectedType)
+                .toList();
 
-        // Safety check: if current selectCategory is not in the list (or null), pick the first one
-        if (currentCategories.isNotEmpty) {
-          if (selectCategory == null || !currentCategories.any((c) => c.id == selectCategory!.id)) {
-             // We don't call setState here because it's during build, 
-             // but we update the local variable so the dropdown is valid.
-             selectCategory = currentCategories.first;
-          }
-        }
+            if (currentCategories.isNotEmpty) {
+              if (selectCategory == null ||
+                  !currentCategories.any((c) => c.id == selectCategory!.id)) {
+                selectCategory = currentCategories.first;
+              }
+            }
 
-        return Container(
-          decoration: BoxDecoration(
-            color: theme.scaffoldBackgroundColor,
-            borderRadius:
-                const BorderRadius.vertical(top: Radius.circular(kAppBorderRadius)),
-          ),
-          padding: EdgeInsets.fromLTRB(
-            kAppPadding,
-            kAppPadding,
-            kAppPadding,
-            kAppPadding + bottomInset,
-          ),
-          child: ListView(
-            controller: widget.scrollController,
-            children: [
-              Container(
-                width: 40,
-                height: 4,
-                margin: const EdgeInsets.only(bottom: 20),
-                decoration: BoxDecoration(
-                  color: theme.dividerColor.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(2),
-                ),
+            return Container(
+              decoration: BoxDecoration(
+                color: theme.scaffoldBackgroundColor,
+                borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(kAppBorderRadius)),
               ),
-              Text(
-                widget.existingExpense != null
-                    ? 'Edit Transaction'
-                    : 'Add ${selectedType == TransactionType.income ? 'Income' : 'Expense'}',
-                style: theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+              padding: EdgeInsets.fromLTRB(
+                kAppPadding,
+                kAppPadding,
+                kAppPadding,
+                kAppPadding + bottomInset,
               ),
-              const SizedBox(height: 24),
-              Center(
-                child: ToggleButtons(
-                  borderRadius: BorderRadius.circular(8),
-                  isSelected: [
-                    selectedType == TransactionType.expense,
-                    selectedType == TransactionType.income,
-                  ],
-                  onPressed: (index) {
-                    setState(() {
-                      selectedType = index == 0
-                          ? TransactionType.expense
-                          : TransactionType.income;
-                      _updateCategories(state.categories);
-                    });
-                  },
-                  children: const [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 24),
-                      child: Text('Expense'),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 24),
-                      child: Text('Income'),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                maxLength: 50,
-                controller: titleController,
-                textCapitalization: TextCapitalization.sentences,
-                onTap: () {
-                  if (widget.draggableController.isAttached) {
-                    widget.draggableController.animateTo(
-                      0.9,
-                      curve: Curves.easeOut,
-                      duration: const Duration(milliseconds: 300),
-                    );
-                  }
-                },
-                decoration: const InputDecoration(
-                  labelText: 'Title',
-                  hintText: 'e.g. Grocery Shopping',
-                  prefixIcon: Icon(Icons.title),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Row(
+              child: ListView(
+                controller: widget.scrollController,
                 children: [
-                  Expanded(
-                    child: TextField(
-                      controller: amountController,
-                      keyboardType:
-                          const TextInputType.numberWithOptions(decimal: true),
-                      onTap: () {
-                        if (widget.draggableController.isAttached) {
-                          widget.draggableController.animateTo(
-                            0.9,
-                            curve: Curves.easeOut,
-                            duration: const Duration(milliseconds: 300),
-                          );
-                        }
-                      },
-                      decoration: const InputDecoration(
-                        labelText: 'Amount',
-                        prefixText: '\$ ',
-                        prefixIcon: Icon(Icons.attach_money),
-                      ),
+                  Container(
+                    width: 40,
+                    height: 4,
+                    margin: const EdgeInsets.only(bottom: 20),
+                    decoration: BoxDecoration(
+                      color: theme.dividerColor.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(2),
                     ),
                   ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: TextField(
-                      readOnly: true,
-                      onTap: presentDatePicker,
-                      decoration: InputDecoration(
-                        labelText: 'Date',
-                        hintText: selectDate == null
-                            ? 'Select Date'
-                            : formatter.format(selectDate!),
-                        prefixIcon: const Icon(Icons.calendar_today),
-                        suffixIcon: const Icon(Icons.arrow_drop_down),
-                      ),
-                      controller: dateController,
+                  Text(
+                    widget.existingExpense != null
+                        ? context.l10n('edit_transaction')
+                        : context.l10n('add_transaction'),
+                    style: theme.textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: DropdownButtonFormField<CategoryModel>(
-                      value: selectCategory,
-                      decoration: const InputDecoration(
-                        labelText: 'Category',
-                        prefixIcon: Icon(Icons.category),
-                      ),
-                      items: currentCategories
-                          .map(
-                            (category) => DropdownMenuItem(
-                              value: category,
-                              child: Row(
-                                children: [
-                                  Icon(
-                                      IconData(category.iconCode,
-                                          fontFamily: 'MaterialIcons'),
-                                      size: 16),
-                                  const SizedBox(width: 8),
-                                  Text(category.name.toUpperCase()),
-                                ],
-                              ),
-                            ),
-                          )
-                          .toList(),
-                      onChanged: (value) {
-                        if (value == null) return;
+                  const SizedBox(height: 24),
+                  Center(
+                    child: ToggleButtons(
+                      borderRadius: BorderRadius.circular(8),
+                      isSelected: [
+                        selectedType == TransactionType.expense,
+                        selectedType == TransactionType.income,
+                      ],
+                      onPressed: (index) {
                         setState(() {
-                          selectCategory = value;
+                          selectedType = index == 0
+                              ? TransactionType.expense
+                              : TransactionType.income;
+                          _updateCategories(state.categories);
                         });
                       },
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: Text(context.l10n('expenses')),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
+                          child: Text(context.l10n('income')),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(width: 8),
-                  IconButton(
-                    onPressed: () => _showAddCategoryDialog(state.categories),
-                    icon: const Icon(Icons.add_circle_outline),
-                    tooltip: "Add Category",
+                  const SizedBox(height: 16),
+                  TextField(
+                    maxLength: 50,
+                    controller: titleController,
+                    textCapitalization: TextCapitalization.sentences,
+                    onTap: () {
+                      if (widget.draggableController.isAttached) {
+                        widget.draggableController.animateTo(
+                          0.9,
+                          curve: Curves.easeOut,
+                          duration: const Duration(milliseconds: 300),
+                        );
+                      }
+                    },
+                    decoration: InputDecoration(
+                      labelText: context.l10n('title'),
+                      hintText: 'e.g. Grocery Shopping',
+                      prefixIcon: const Icon(Icons.title),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: amountController,
+                          keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true),
+                          onTap: () {
+                            if (widget.draggableController.isAttached) {
+                              widget.draggableController.animateTo(
+                                0.9,
+                                curve: Curves.easeOut,
+                                duration: const Duration(milliseconds: 300),
+                              );
+                            }
+                          },
+                          decoration: InputDecoration(
+                            labelText: context.l10n('amount'),
+                            prefixText: '\$ ',
+                            prefixIcon: const Icon(Icons.attach_money),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: TextField(
+                          readOnly: true,
+                          onTap: presentDatePicker,
+                          decoration: InputDecoration(
+                            labelText: context.l10n('date'),
+                            hintText: selectDate == null
+                                ? 'Select Date'
+                                : formatter.format(selectDate!),
+                            prefixIcon: const Icon(Icons.calendar_today),
+                            suffixIcon: const Icon(Icons.arrow_drop_down),
+                          ),
+                          controller: dateController,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: DropdownButtonFormField<CategoryModel>(
+                          value: selectCategory,
+                          decoration: InputDecoration(
+                            labelText: context.l10n('category'),
+                            prefixIcon: const Icon(Icons.category),
+                          ),
+                          items: currentCategories
+                              .map(
+                                (category) => DropdownMenuItem(
+                                  value: category,
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                          IconData(category.iconCode,
+                                              fontFamily: 'MaterialIcons'),
+                                          size: 16),
+                                      const SizedBox(width: 8),
+                                      Text(category.name.toUpperCase()),
+                                    ],
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (value) {
+                            if (value == null) return;
+                            setState(() {
+                              selectCategory = value;
+                            });
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      IconButton(
+                        onPressed: () =>
+                            _showAddCategoryDialog(state.categories),
+                        icon: const Icon(Icons.add_circle_outline),
+                        tooltip: "Add Category",
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 32),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SecondaryButton(
+                          text: context.l10n('cancel'),
+                          onTap: () => Navigator.pop(context),
+                        ),
+                      ),
+                      const SizedBox(width: kAppPadding),
+                      Expanded(
+                        child: PrimaryButton(
+                          text: widget.existingExpense != null
+                              ? context.l10n('update')
+                              : context.l10n('save'),
+                          onTap: submitExpenseDate,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-              const SizedBox(height: 32),
-              Row(
-                children: [
-                  Expanded(
-                    child: SecondaryButton(
-                      text: 'Cancel',
-                      onTap: () => Navigator.pop(context),
-                    ),
-                  ),
-                  const SizedBox(width: kAppPadding),
-                  Expanded(
-                    child: PrimaryButton(
-                      text: widget.existingExpense != null ? 'Update' : 'Save',
-                      onTap: submitExpenseDate,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
+            );
+          },
         );
       },
     );

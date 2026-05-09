@@ -58,6 +58,35 @@ class AppRepository with HiveServices {
     await storeFromHive('themeValue', themeMode.name);
   }
 
+  String getLanguage() {
+    return getFromHive('languageCode')?.toString() ?? 'en';
+  }
+
+  Future<void> saveLanguage(String languageCode) async {
+    await storeFromHive('languageCode', languageCode);
+  }
+
+  UserModel getUser() {
+    final userMap = getFromHive('userProfile');
+    if (userMap != null) {
+      final map = Map<String, dynamic>.from(userMap as Map);
+      return UserModel(
+        name: map['name'] ?? 'Vijay Kumar',
+        email: map['email'] ?? 'vijay@example.com',
+        profileImageUrl: map['profileImageUrl'] ?? '',
+      );
+    }
+    return const UserModel(name: 'Vijay Kumar', email: 'vijay@example.com');
+  }
+
+  Future<void> saveUser(UserModel user) async {
+    await storeFromHive('userProfile', {
+      'name': user.name,
+      'email': user.email,
+      'profileImageUrl': user.profileImageUrl,
+    });
+  }
+
   final List<CategoryModel> _defaultCategories = [
     CategoryModel(
       name: 'Food',

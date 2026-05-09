@@ -17,3 +17,12 @@ export 'package:expensive_tracker_app/features/expensive_list/expense_list.dart'
 export 'package:expensive_tracker_app/repositories/app_repository.dart';
 export 'package:expensive_tracker_app/blocs/theme/theme_bloc.dart';
 export 'package:expensive_tracker_app/blocs/expense/expense_bloc.dart';
+export 'package:expensive_tracker_app/blocs/user/user_bloc.dart';
+export 'package:expensive_tracker_app/blocs/user/user_event.dart';
+export 'package:expensive_tracker_app/blocs/user/user_state.dart';
+export 'package:expensive_tracker_app/blocs/settings/settings_bloc.dart';
+export 'package:expensive_tracker_app/blocs/settings/settings_event.dart';
+export 'package:expensive_tracker_app/blocs/settings/settings_state.dart';
+export 'package:expensive_tracker_app/models/user_model.dart';
+export 'package:expensive_tracker_app/widgets/app_drawer.dart';
+export 'package:expensive_tracker_app/utils/app_localization.dart';

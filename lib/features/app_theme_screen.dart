@@ -17,7 +17,9 @@ class AppThemeScreen extends StatelessWidget {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ...ThemeMode.values.map(
+                      ...ThemeMode.values
+                          .where((m) => m != ThemeMode.system)
+                          .map(
                         (themeMode) => Column(
                           children: [
                             Card(
@@ -32,7 +34,16 @@ class AppThemeScreen extends StatelessWidget {
                                   .read<ThemeBloc>()
                                   .add(ThemeChanged(themeMode)),
                               child: Visibility(
-                                visible: themeMode == state.themeMode,
+                                visible: themeMode == state.themeMode ||
+                                    (state.themeMode == ThemeMode.system &&
+                                        ((themeMode == ThemeMode.dark &&
+                                                MediaQuery.of(context)
+                                                        .platformBrightness ==
+                                                    Brightness.dark) ||
+                                            (themeMode == ThemeMode.light &&
+                                                MediaQuery.of(context)
+                                                        .platformBrightness ==
+                                                    Brightness.light))),
                                 replacement: const Icon(Icons.circle_outlined),
                                 child: const Icon(
                                   color: Colors.green,

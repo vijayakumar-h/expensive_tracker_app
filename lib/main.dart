@@ -17,6 +17,12 @@ void main() async {
           BlocProvider(
             create: (context) => ExpenseBloc(repository)..add(LoadExpenses()),
           ),
+          BlocProvider(
+            create: (context) => UserBloc(repository)..add(LoadUser()),
+          ),
+          BlocProvider(
+            create: (context) => SettingsBloc(repository)..add(LoadSettings()),
+          ),
         ],
         child: const ExpensiveTrackerApp(),
       ),
