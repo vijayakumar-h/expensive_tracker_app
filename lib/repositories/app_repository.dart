@@ -1,0 +1,93 @@
+import 'package:expensive_tracker_app/utils/common_exports.dart';
+
+class AppRepository with HiveServices {
+  Future<void> init() async {
+    await initializeHive();
+    final categoriesMap = getFromHive('categories', defaultValue: {}) as Map<dynamic, dynamic>;
+    if (categoriesMap.isEmpty) {
+      await saveCategories(_defaultCategories);
+    }
+  }
+
+  List<CategoryModel> getCategories() {
+    final categoriesMap = getFromHive('categories', defaultValue: {}) as Map<dynamic, dynamic>;
+    if (categoriesMap.isNotEmpty) {
+      return categoriesMap.values
+          .map((c) => CategoryModel.fromMap(Map<dynamic, dynamic>.from(c as Map)))
+          .toList();
+    }
+    return _defaultCategories;
+  }
+
+  Future<void> saveCategories(List<CategoryModel> categories) async {
+    final Map<String, dynamic> categoriesMap = {
+      for (var c in categories) c.id: c.toMap()
+    };
+    await storeFromHive('categories', categoriesMap);
+  }
+
+  List<Expense> getExpenses() {
+    final expensesMap = getFromHive('expenses', defaultValue: {}) as Map<dynamic, dynamic>;
+    if (expensesMap.isEmpty) return [];
+
+    return expensesMap.values
+        .map((e) => Expense.fromMap(Map<dynamic, dynamic>.from(e as Map)))
+        .toList();
+  }
+
+  Future<void> saveExpense(Expense expense) async {
+    final expensesMap = getFromHive('expenses', defaultValue: {}) as Map<dynamic, dynamic>;
+    final newMap = Map<dynamic, dynamic>.from(expensesMap);
+    newMap[expense.id] = expense.toMap();
+    await storeFromHive('expenses', newMap);
+  }
+
+  Future<void> deleteExpense(String id) async {
+    final expensesMap = getFromHive('expenses', defaultValue: {}) as Map<dynamic, dynamic>;
+    final newMap = Map<dynamic, dynamic>.from(expensesMap);
+    newMap.remove(id);
+    await storeFromHive('expenses', newMap);
+  }
+
+  ThemeMode getTheme() {
+    final String themeModeName = getFromHive('themeValue')?.toString() ?? ThemeMode.system.name;
+    return ThemeMode.values.singleWhere((element) => element.name == themeModeName);
+  }
+
+  Future<void> saveTheme(ThemeMode themeMode) async {
+    await storeFromHive('themeValue', themeMode.name);
+  }
+
+  final List<CategoryModel> _defaultCategories = [
+    CategoryModel(
+      name: 'Food',
+      iconCode: Icons.lunch_dining.codePoint,
+      type: TransactionType.expense,
+      id: 'food',
+    ),
+    CategoryModel(
+      name: 'Travel',
+      iconCode: Icons.flight_takeoff_sharp.codePoint,
+      type: TransactionType.expense,
+      id: 'travel',
+    ),
+    CategoryModel(
+      name: 'Leisure',
+      iconCode: Icons.movie.codePoint,
+      type: TransactionType.expense,
+      id: 'leisure',
+    ),
+    CategoryModel(
+      name: 'Work',
+      iconCode: Icons.work.codePoint,
+      type: TransactionType.expense,
+      id: 'work',
+    ),
+    CategoryModel(
+      name: 'Salary',
+      iconCode: Icons.attach_money.codePoint,
+      type: TransactionType.income,
+      id: 'salary',
+    ),
+  ];
+}
