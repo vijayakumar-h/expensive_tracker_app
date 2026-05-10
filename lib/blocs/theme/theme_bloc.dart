@@ -1,6 +1,4 @@
-import 'package:expensive_tracker_app/repositories/app_repository.dart';
 import 'package:expensive_tracker_app/utils/common_exports.dart';
-import 'package:equatable/equatable.dart';
 
 part 'theme_event.dart';
 part 'theme_state.dart';
