@@ -32,3 +32,5 @@ export 'package:expensive_tracker_app/blocs/auth/auth_event.dart';
 export 'package:expensive_tracker_app/blocs/auth/auth_state.dart';
 export 'package:expensive_tracker_app/features/auth/login_screen.dart';
 export 'package:expensive_tracker_app/features/auth/signup_screen.dart';
+export 'package:expensive_tracker_app/features/app_theme_screen.dart';
+
