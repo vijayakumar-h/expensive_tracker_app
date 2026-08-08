@@ -1,42 +1,71 @@
-import 'common_exports.dart';
+import 'package:expensive_tracker_app/common_exports.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Hive.init((await getApplicationDocumentsDirectory()).path);
 
-  await initServiceLocator();
+  // 🟢 Pure Native Constructor & RepositoryProvider Dependency Injection (No GetIt)
+  final apiService = ApiService();
+  final hiveService = HiveService();
+
+  // Data Sources
+  final expenseLocalDataSource =
+      ExpenseLocalDataSourceImpl(hiveService: hiveService);
+  final expenseRemoteDataSource =
+      ExpenseRemoteDataSourceImpl(apiService: apiService);
+  final settingsLocalDataSource =
+      SettingsLocalDataSourceImpl(hiveService: hiveService);
+  final userLocalDataSource = UserLocalDataSourceImpl(hiveService: hiveService);
+  final authRemoteDataSource =
+      MockAuthRemoteDataSourceImpl(apiService: apiService);
+
+  // Repositories
+  final expenseRepository = ExpenseRepositoryImpl(
+    localDataSource: expenseLocalDataSource,
+    remoteDataSource: expenseRemoteDataSource,
+  );
+  await expenseRepository.init();
+
+  final settingsRepository = SettingsRepositoryImpl(
+    localDataSource: settingsLocalDataSource,
+    apiService: apiService,
+  );
+
+  final userRepository =
+      UserRepositoryImpl(localDataSource: userLocalDataSource);
+  final authRepository =
+      AuthRepositoryImpl(remoteDataSource: authRemoteDataSource);
 
   runApp(
     MultiRepositoryProvider(
       providers: [
-        RepositoryProvider<ExpenseRepository>.value(
-            value: sl<ExpenseRepository>()),
-        RepositoryProvider<SettingsRepository>.value(
-            value: sl<SettingsRepository>()),
-        RepositoryProvider<UserRepository>.value(value: sl<UserRepository>()),
-        RepositoryProvider<AuthRepository>.value(value: sl<AuthRepository>()),
+        RepositoryProvider<ExpenseRepository>.value(value: expenseRepository),
+        RepositoryProvider<SettingsRepository>.value(value: settingsRepository),
+        RepositoryProvider<UserRepository>.value(value: userRepository),
+        RepositoryProvider<AuthRepository>.value(value: authRepository),
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) =>
-                ThemeBloc(sl<SettingsRepository>())..add(LoadTheme()),
+            create: (context) => ThemeBloc(context.read<SettingsRepository>())
+              ..add(const LoadTheme()),
+          ),
+          BlocProvider(
+            create: (context) => ExpenseBloc(context.read<ExpenseRepository>())
+              ..add(const LoadExpenses()),
           ),
           BlocProvider(
             create: (context) =>
-                ExpenseBloc(sl<ExpenseRepository>())..add(LoadExpenses()),
+                UserBloc(context.read<UserRepository>())..add(LoadUser()),
           ),
           BlocProvider(
             create: (context) =>
-                UserBloc(sl<UserRepository>())..add(LoadUser()),
+                SettingsBloc(context.read<SettingsRepository>())
+                  ..add(const LoadSettings()),
           ),
           BlocProvider(
             create: (context) =>
-                SettingsBloc(sl<SettingsRepository>())..add(LoadSettings()),
-          ),
-          BlocProvider(
-            create: (context) =>
-                AuthBloc(sl<AuthRepository>())..add(AppStarted()),
+                AuthBloc(context.read<AuthRepository>())..add(AppStarted()),
           ),
         ],
         child: const ExpensiveTrackerApp(),
