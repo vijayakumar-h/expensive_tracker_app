@@ -1,10 +1,11 @@
-import 'package:expensive_tracker_app/repositories/app_repository.dart';
-import 'package:expensive_tracker_app/utils/common_exports.dart';
-import 'package:equatable/equatable.dart';
+import 'package:expensive_tracker_app/src/utils/common_exports.dart';
 
 part 'expense_event.dart';
 part 'expense_state.dart';
 
+/// 🔴 SHORT-LIVED FEATURE BLoC
+/// [ExpenseBloc] handles UI state management for expenses and categories.
+/// It receives [AppRepository] via constructor injection (supplied by GetIt `sl<AppRepository>()`).
 class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
   final AppRepository _repository;
 

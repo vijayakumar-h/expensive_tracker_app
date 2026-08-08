@@ -1,5 +1,4 @@
-import 'package:equatable/equatable.dart';
-import 'package:expensive_tracker_app/models/user_model.dart';
+import 'package:expensive_tracker_app/src/utils/common_exports.dart';
 
 class UserState extends Equatable {
   final UserModel user;

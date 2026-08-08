@@ -1,5 +1,5 @@
-import 'package:expensive_tracker_app/utils/common_exports.dart';
-import 'package:expensive_tracker_app/features/chart/chart_screen.dart';
+import 'package:expensive_tracker_app/src/utils/common_exports.dart';
+import 'package:expensive_tracker_app/src/features/chart/chart_screen.dart';
 
 class Expenses extends StatefulWidget {
   const Expenses({super.key});

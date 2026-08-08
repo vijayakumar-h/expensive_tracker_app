@@ -1,8 +1,8 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:expensive_tracker_app/repositories/app_repository.dart';
-import 'package:expensive_tracker_app/blocs/settings/settings_event.dart';
-import 'package:expensive_tracker_app/blocs/settings/settings_state.dart';
+import 'package:expensive_tracker_app/src/utils/common_exports.dart';
 
+/// 🔴 SHORT-LIVED FEATURE BLoC
+/// [SettingsBloc] manages language and settings state for the application.
+/// It receives [AppRepository] via constructor injection (supplied by GetIt `sl<AppRepository>()`).
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   final AppRepository _repository;
 

@@ -1,8 +1,8 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:expensive_tracker_app/repositories/app_repository.dart';
-import 'package:expensive_tracker_app/blocs/user/user_event.dart';
-import 'package:expensive_tracker_app/blocs/user/user_state.dart';
+import 'package:expensive_tracker_app/src/utils/common_exports.dart';
 
+/// 🔴 SHORT-LIVED FEATURE BLoC
+/// [UserBloc] handles user profile state management.
+/// It receives [AppRepository] via constructor injection (supplied by GetIt `sl<AppRepository>()`).
 class UserBloc extends Bloc<UserEvent, UserState> {
   final AppRepository _repository;
 

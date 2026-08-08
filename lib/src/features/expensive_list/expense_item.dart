@@ -1,4 +1,5 @@
-import 'package:expensive_tracker_app/utils/common_exports.dart';
+// ignore_for_file: non_const_argument_for_const_parameter
+import 'package:expensive_tracker_app/src/utils/common_exports.dart';
 
 class ExpenseItem extends StatelessWidget {
   final Expense expense;

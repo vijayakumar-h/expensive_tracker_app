@@ -1,4 +1,4 @@
-import 'package:expensive_tracker_app/utils/common_exports.dart';
+import 'package:expensive_tracker_app/src/utils/common_exports.dart';
 
 class PrimaryButton extends StatelessWidget {
   final String text;
@@ -28,7 +28,7 @@ class PrimaryButton extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.w800,
         ),
@@ -36,4 +36,3 @@ class PrimaryButton extends StatelessWidget {
     );
   }
 }
-

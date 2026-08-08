@@ -1,5 +1,5 @@
-import 'package:expensive_tracker_app/utils/common_exports.dart';
-import 'package:expensive_tracker_app/features/chart/chart_widgets.dart';
+import 'package:expensive_tracker_app/src/utils/common_exports.dart';
+import 'package:expensive_tracker_app/src/features/chart/chart_widgets.dart';
 
 class ChartScreen extends StatefulWidget {
   final List<Expense> expenses;

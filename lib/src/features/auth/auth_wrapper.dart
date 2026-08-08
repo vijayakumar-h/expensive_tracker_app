@@ -1,4 +1,4 @@
-import 'package:expensive_tracker_app/utils/common_exports.dart';
+import 'package:expensive_tracker_app/src/utils/common_exports.dart';
 
 class AuthWrapper extends StatelessWidget {
   const AuthWrapper({super.key});

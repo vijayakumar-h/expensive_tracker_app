@@ -12,8 +12,6 @@ class AppTheme {
   static const Color _blackBG = Color(0XFF0E0E0F);
   static const Color _primaryColor = Color(0xFF9761FF);
   static const Color _mediumGrayBG = Color(0XFF969A9E);
-  static const Color _lightGrayBG = Color(0XFFE5E4E6);
-  static const Color _neutralColor = Color(0XFFF5F5F5);
 
   static const MaterialColor _mainAppColor =
       MaterialColor(0xFF000000, <int, Color>{

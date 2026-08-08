@@ -1,4 +1,4 @@
-import 'package:expensive_tracker_app/utils/common_exports.dart';
+import 'package:expensive_tracker_app/src/utils/common_exports.dart';
 
 const double kAppPadding = 16.0;
 const double kAppBorderRadius = 12.0;

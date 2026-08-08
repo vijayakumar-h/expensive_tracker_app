@@ -1,12 +1,23 @@
-import 'package:expensive_tracker_app/utils/common_exports.dart';
+import 'package:expensive_tracker_app/src/utils/common_exports.dart';
 
+/// Singletons start here:
+/// [AppRepository] is registered as a Lazy Singleton in GetIt.
+/// It receives [ApiService] via constructor injection to integrate local storage (Hive)
+/// with remote HTTP operations and globalization headers.
 class AppRepository with HiveServices {
+  final ApiService? apiService;
+
+  AppRepository({this.apiService});
+
   Future<void> init() async {
     await initializeHive();
     final categoriesMap = getFromHive('categories', defaultValue: {}) as Map<dynamic, dynamic>;
     if (categoriesMap.isEmpty) {
       await saveCategories(_defaultCategories);
     }
+    // Sync active language header in ApiService Singleton
+    final currentLang = getLanguage();
+    apiService?.setLanguage(currentLang);
   }
 
   List<CategoryModel> getCategories() {
@@ -64,6 +75,7 @@ class AppRepository with HiveServices {
 
   Future<void> saveLanguage(String languageCode) async {
     await storeFromHive('languageCode', languageCode);
+    apiService?.setLanguage(languageCode);
   }
 
   UserModel getUser() {

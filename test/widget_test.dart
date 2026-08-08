@@ -1,29 +1,25 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:expensive_tracker_app/main.dart';
-import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:expensive_tracker_app/src/utils/common_exports.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const ExpensiveTrackerApp());
+  test('ApiService and GetIt singletons initialization test', () async {
+    final tempDir = await Directory.systemTemp.createTemp();
+    Hive.init(tempDir.path);
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    await sl.reset();
+    await initServiceLocator();
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    expect(sl.isRegistered<ApiService>(), isTrue);
+    expect(sl.isRegistered<AppRepository>(), isTrue);
+    expect(sl.isRegistered<AuthRepository>(), isTrue);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Verify ApiService header initialization
+    final apiService = sl<ApiService>();
+    expect(apiService.headers['Accept-Language'], equals('en'));
+
+    // Test language change updates ApiService header
+    await sl<AppRepository>().saveLanguage('hi');
+    expect(apiService.headers['Accept-Language'], equals('hi'));
   });
 }

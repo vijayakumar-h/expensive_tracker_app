@@ -1,8 +1,8 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../repositories/auth_repository.dart';
-import 'auth_event.dart';
-import 'auth_state.dart';
+import 'package:expensive_tracker_app/src/utils/common_exports.dart';
 
+/// 🔴 SHORT-LIVED FEATURE BLoC
+/// [AuthBloc] handles authentication states (AppStarted, LoginRequested, SignUpRequested, LogoutRequested).
+/// It receives [AuthRepository] via constructor injection (supplied by GetIt `sl<AuthRepository>()`).
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository _authRepository;
 

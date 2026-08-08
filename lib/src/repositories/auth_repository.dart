@@ -1,4 +1,4 @@
-import '../models/user_model.dart';
+import 'package:expensive_tracker_app/src/utils/common_exports.dart';
 
 abstract class AuthRepository {
   Future<UserModel> login(String email, String password);
@@ -7,15 +7,19 @@ abstract class AuthRepository {
   Future<UserModel?> getCurrentUser();
 }
 
+/// Singletons start here:
+/// [MockAuthRepository] is registered as a Lazy Singleton in GetIt.
 class MockAuthRepository implements AuthRepository {
+  final ApiService? apiService;
   UserModel? _currentUser;
+
+  MockAuthRepository({this.apiService});
 
   @override
   Future<UserModel> login(String email, String password) async {
     // Simulate network delay
     await Future.delayed(const Duration(seconds: 1));
     
-    // Mock user for now
     _currentUser = UserModel(
       name: 'Vijay Kumar',
       email: email,

@@ -1,4 +1,5 @@
-import 'package:expensive_tracker_app/utils/common_exports.dart';
+// ignore_for_file: non_const_argument_for_const_parameter
+import 'package:expensive_tracker_app/src/utils/common_exports.dart';
 
 class NewExpenseScreen extends StatefulWidget {
   final ScrollController scrollController;
@@ -275,7 +276,7 @@ class _NewExpenseScreenState extends State<NewExpenseScreen> {
                     children: [
                       Expanded(
                         child: DropdownButtonFormField<CategoryModel>(
-                          value: selectCategory,
+                          initialValue: selectCategory,
                           decoration: InputDecoration(
                             labelText: context.l10n('category'),
                             prefixIcon: const Icon(Icons.category),
