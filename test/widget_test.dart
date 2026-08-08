@@ -1,8 +1,8 @@
 import 'dart:io';
-import 'package:expensive_tracker_app/core/services/api_service.dart';
-import 'package:expensive_tracker_app/core/services/hive_service.dart';
-import 'package:expensive_tracker_app/features/settings/data/datasources/settings_local_datasource.dart';
-import 'package:expensive_tracker_app/features/settings/data/repositories/settings_repository_impl.dart';
+import 'package:expensive_tracker_app/src/services/api_service.dart';
+import 'package:expensive_tracker_app/src/services/hive_service.dart';
+import 'package:expensive_tracker_app/src/features/settings/data/datasources/settings_local_datasource.dart';
+import 'package:expensive_tracker_app/src/features/settings/data/repositories/settings_repository_impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
 
