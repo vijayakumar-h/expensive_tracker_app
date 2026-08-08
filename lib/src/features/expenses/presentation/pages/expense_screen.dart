@@ -65,32 +65,37 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
             centerTitle: false,
             title: Text(
               context.l10n('app_title'),
-              style:  TextStyle(
+              style: TextStyle(
                 fontSize: 24,
                 inherit: true,
                 fontWeight: FontWeight.bold,
-                color:AppTheme().light.primaryColor,
+                color: AppTheme().light.primaryColor,
               ),
             ),
             actions: [
-              IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ChartScreen(expenses: expenses),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.pie_chart_rounded),
-                tooltip: "Reports",
+              AppIconButton(
+                tooltip: "Add",
+                icon: Icons.add,
+                buttonCallback: _openAddExpenseOverlay,
               ),
+              SizedBox(width: 8),
+              AppIconButton(
+                  tooltip: "Reports",
+                  icon: Icons.pie_chart_rounded,
+                  buttonCallback: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ChartScreen(expenses: expenses),
+                      ),
+                    );
+                  }),
+              SizedBox(width: 8),
             ],
           ),
           drawer: const AppDrawer(),
           body: Column(
             children: [
-              // Dashboard Total Balance Card
               Container(
                 width: double.infinity,
                 margin: const EdgeInsets.all(16),
@@ -225,11 +230,6 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
                       ),
               ),
             ],
-          ),
-          floatingActionButton: FloatingActionButton.extended(
-            onPressed: _openAddExpenseOverlay,
-            icon: const Icon(Icons.add),
-            label: Text(context.l10n('add')),
           ),
         );
       },

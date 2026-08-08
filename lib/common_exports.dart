@@ -58,4 +58,6 @@ export 'package:expensive_tracker_app/src/widgets/app_drawer.dart';
 export 'package:expensive_tracker_app/src/widgets/secondary_button.dart';
 export 'package:expensive_tracker_app/src/features/expenses/presentation/widgets/expense_item.dart';
 export 'package:expensive_tracker_app/src/features/user/presentation/bloc/user_state.dart';
+export 'package:expensive_tracker_app/src/widgets/app_icon_button.dart';
+
 
