@@ -40,7 +40,7 @@ class AppIconButton extends StatelessWidget {
         ),
         onPressed: () {
           if (buttonCallback != null) {
-            buttonCallback;
+            buttonCallback?.call();
           }
         },
       ),
