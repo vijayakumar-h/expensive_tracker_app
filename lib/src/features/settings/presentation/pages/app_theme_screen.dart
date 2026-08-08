@@ -1,3 +1,4 @@
+// ignore_for_file: deprecated_member_use
 import 'package:expensive_tracker_app/common_exports.dart';
 
 class AppThemeScreen extends StatelessWidget {

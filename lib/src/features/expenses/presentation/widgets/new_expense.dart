@@ -1,3 +1,4 @@
+// ignore_for_file: non_const_argument_for_const_parameter
 import 'package:expensive_tracker_app/common_exports.dart';
 
 class NewExpenseScreen extends StatefulWidget {

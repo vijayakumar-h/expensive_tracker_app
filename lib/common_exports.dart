@@ -35,12 +35,11 @@ export 'package:expensive_tracker_app/src/features/user/data/datasources/user_lo
 export 'package:expensive_tracker_app/src/features/user/data/repositories/user_repository_impl.dart';
 export 'package:expensive_tracker_app/src/utils/constants.dart';
 export 'package:expensive_tracker_app/src/features/expenses/data/models/category_model.dart';
-export 'package:expensive_tracker_app/src/features/expenses/data//models/expense_model.dart';
+export 'package:expensive_tracker_app/src/features/expenses/data/models/expense_model.dart';
 export 'package:dio/dio.dart';
 export 'package:flutter/foundation.dart';
 export 'package:expensive_tracker_app/src/features/user/data/models/user_model.dart';
 export 'package:expensive_tracker_app/src/features/auth/presentation/widgets/auth_text_field.dart';
-export 'package:expensive_tracker_app/common_exports.dart';
 export 'package:expensive_tracker_app/src/features/auth/presentation/bloc/auth_state.dart';
 export 'package:equatable/equatable.dart';
 export 'package:expensive_tracker_app/src/features/auth/presentation/pages/login_screen.dart';
