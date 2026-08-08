@@ -1,13 +1,13 @@
 import 'package:expensive_tracker_app/common_exports.dart';
 
-class Expenses extends StatefulWidget {
-  const Expenses({super.key});
+class ExpenseScreen extends StatefulWidget {
+  const ExpenseScreen({super.key});
 
   @override
-  State<Expenses> createState() => _ExpensesState();
+  State<ExpenseScreen> createState() => _ExpenseScreenState();
 }
 
-class _ExpensesState extends State<Expenses> {
+class _ExpenseScreenState extends State<ExpenseScreen> {
   void _openAddExpenseOverlay() {
     showModalBottomSheet(
       useSafeArea: true,
@@ -65,10 +65,11 @@ class _ExpensesState extends State<Expenses> {
             centerTitle: false,
             title: Text(
               context.l10n('app_title'),
-              style: const TextStyle(
+              style:  TextStyle(
+                fontSize: 24,
                 inherit: true,
                 fontWeight: FontWeight.bold,
-                fontSize: 24,
+                color:AppTheme().light.primaryColor,
               ),
             ),
             actions: [

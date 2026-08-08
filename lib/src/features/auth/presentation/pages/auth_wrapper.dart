@@ -26,7 +26,7 @@ class AuthWrapper extends StatelessWidget {
         }
 
         if (state is Authenticated) {
-          return const Expenses();
+          return const ExpenseScreen();
         }
 
         return const LoginScreen();
