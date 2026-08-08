@@ -1,4 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:expensive_tracker_app/common_exports.dart';
+
+final ApiService apiService = ApiService();
+final HiveService hiveService = HiveService();
 
 const double kAppPadding = 16.0;
 const double kAppBorderRadius = 12.0;

@@ -1,5 +1,5 @@
+import 'package:expensive_tracker_app/common_exports.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 var kDarkColorScheme = ColorScheme.fromSeed(
   brightness: Brightness.dark,

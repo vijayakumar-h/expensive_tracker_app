@@ -4,10 +4,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Hive.init((await getApplicationDocumentsDirectory()).path);
 
-  // 🟢 Pure Native Constructor & RepositoryProvider Dependency Injection (No GetIt)
-  final apiService = ApiService();
-  final hiveService = HiveService();
-
   // Data Sources
   final expenseLocalDataSource =
       ExpenseLocalDataSourceImpl(hiveService: hiveService);

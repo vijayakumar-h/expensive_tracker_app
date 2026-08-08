@@ -33,3 +33,4 @@ export 'package:expensive_tracker_app/features/settings/data/datasources/setting
 export 'package:expensive_tracker_app/features/settings/data/repositories/settings_repository_impl.dart';
 export 'package:expensive_tracker_app/features/user/data/datasources/user_local_datasource.dart';
 export 'package:expensive_tracker_app/features/user/data/repositories/user_repository_impl.dart';
+export 'package:expensive_tracker_app/core/utils/constants.dart';
