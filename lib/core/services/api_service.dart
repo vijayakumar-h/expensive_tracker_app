@@ -1,5 +1,4 @@
-import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
+import 'package:expensive_tracker_app/common_exports.dart';
 
 /// Singletons start here:
 /// [ApiService] is managed as a GetIt Singleton across the entire application lifecycle.

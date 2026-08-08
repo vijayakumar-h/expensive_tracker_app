@@ -1,14 +1,16 @@
-import 'package:flutter/material.dart';
-import '../../../../core/services/hive_service.dart';
-import '../models/category_model.dart';
-import '../models/expense_model.dart';
+import 'package:expensive_tracker_app/common_exports.dart';
 
 abstract class ExpenseLocalDataSource {
   Future<void> init();
+
   List<CategoryModel> getCategories();
+
   Future<void> saveCategories(List<CategoryModel> categories);
+
   List<Expense> getExpenses();
+
   Future<void> saveExpense(Expense expense);
+
   Future<void> deleteExpense(String id);
 }
 
@@ -20,8 +22,8 @@ class ExpenseLocalDataSourceImpl implements ExpenseLocalDataSource {
   @override
   Future<void> init() async {
     await hiveService.init();
-    final categoriesMap =
-        hiveService.get('categories', defaultValue: {}) as Map<dynamic, dynamic>;
+    final categoriesMap = hiveService.get('categories', defaultValue: {})
+        as Map<dynamic, dynamic>;
     if (categoriesMap.isEmpty) {
       await saveCategories(_defaultCategories);
     }
@@ -29,11 +31,12 @@ class ExpenseLocalDataSourceImpl implements ExpenseLocalDataSource {
 
   @override
   List<CategoryModel> getCategories() {
-    final categoriesMap =
-        hiveService.get('categories', defaultValue: {}) as Map<dynamic, dynamic>;
+    final categoriesMap = hiveService.get('categories', defaultValue: {})
+        as Map<dynamic, dynamic>;
     if (categoriesMap.isNotEmpty) {
       return categoriesMap.values
-          .map((c) => CategoryModel.fromMap(Map<dynamic, dynamic>.from(c as Map)))
+          .map((c) =>
+              CategoryModel.fromMap(Map<dynamic, dynamic>.from(c as Map)))
           .toList();
     }
     return _defaultCategories;

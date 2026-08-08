@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:expensive_tracker_app/core/network/api_service.dart';
+import 'package:expensive_tracker_app/core/services/api_service.dart';
 import 'package:expensive_tracker_app/core/services/hive_service.dart';
 import 'package:expensive_tracker_app/features/settings/data/datasources/settings_local_datasource.dart';
 import 'package:expensive_tracker_app/features/settings/data/repositories/settings_repository_impl.dart';

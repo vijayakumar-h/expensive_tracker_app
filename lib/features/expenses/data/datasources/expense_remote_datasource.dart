@@ -1,4 +1,4 @@
-import '../../../../core/network/api_service.dart';
+import '../../../../core/services/api_service.dart';
 
 abstract class ExpenseRemoteDataSource {
   Future<void> syncExpenses();

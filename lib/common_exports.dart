@@ -22,7 +22,7 @@ export 'features/settings/presentation/bloc/theme_state.dart';
 export 'features/user/domain/repositories/user_repository.dart';
 export 'features/user/presentation/bloc/user_bloc.dart';
 export 'features/user/presentation/bloc/user_event.dart';
-export 'package:expensive_tracker_app/core/network/api_service.dart';
+export 'package:expensive_tracker_app/core/services/api_service.dart';
 export 'package:expensive_tracker_app/core/services/hive_service.dart';
 export 'package:expensive_tracker_app/features/auth/data/datasources/auth_remote_datasource.dart';
 export 'package:expensive_tracker_app/features/auth/data/repositories/auth_repository_impl.dart';
@@ -34,3 +34,7 @@ export 'package:expensive_tracker_app/features/settings/data/repositories/settin
 export 'package:expensive_tracker_app/features/user/data/datasources/user_local_datasource.dart';
 export 'package:expensive_tracker_app/features/user/data/repositories/user_repository_impl.dart';
 export 'package:expensive_tracker_app/core/utils/constants.dart';
+export 'package:expensive_tracker_app/features/expenses/data/models/category_model.dart';
+export 'package:expensive_tracker_app/features/expenses/data//models/expense_model.dart';
+export 'package:dio/dio.dart';
+export 'package:flutter/foundation.dart';
