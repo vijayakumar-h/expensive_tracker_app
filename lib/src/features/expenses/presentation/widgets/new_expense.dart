@@ -56,9 +56,8 @@ class _NewExpenseScreenState extends State<NewExpenseScreen> {
   }
 
   void _updateCategories(List<CategoryModel> allCategories) {
-    final categories = allCategories
-        .where((c) => c.type == selectedType)
-        .toList();
+    final categories =
+        allCategories.where((c) => c.type == selectedType).toList();
     if (categories.isNotEmpty) {
       selectCategory = categories.first;
     }
@@ -138,9 +137,8 @@ class _NewExpenseScreenState extends State<NewExpenseScreen> {
       builder: (context, settingsState) {
         return BlocBuilder<ExpenseBloc, ExpenseState>(
           builder: (context, state) {
-            final currentCategories = state.categories
-                .where((c) => c.type == selectedType)
-                .toList();
+            final currentCategories =
+                state.categories.where((c) => c.type == selectedType).toList();
 
             if (currentCategories.isNotEmpty) {
               if (selectCategory == null ||
@@ -164,15 +162,6 @@ class _NewExpenseScreenState extends State<NewExpenseScreen> {
               child: ListView(
                 controller: widget.scrollController,
                 children: [
-                  Container(
-                    width: 40,
-                    height: 4,
-                    margin: const EdgeInsets.only(bottom: 20),
-                    decoration: BoxDecoration(
-                      color: theme.dividerColor.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
                   Text(
                     widget.existingExpense != null
                         ? context.l10n('edit_transaction')

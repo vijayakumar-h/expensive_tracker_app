@@ -11,8 +11,8 @@ class _ExpenseScreenState extends State<ExpenseScreen> {
   void _openAddExpenseOverlay() {
     showModalBottomSheet(
       useSafeArea: true,
-      isScrollControlled: true,
       context: context,
+      isScrollControlled: true,
       builder: (ctx) => DraggableScrollableSheet(
         initialChildSize: 0.7,
         minChildSize: 0.5,
