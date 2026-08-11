@@ -1,4 +1,7 @@
 import 'package:expensive_tracker_app/common_exports.dart';
+import 'package:expensive_tracker_app/src/features/weather/bloc/weather_bloc.dart';
+import 'package:expensive_tracker_app/src/features/weather/data/weather_repository.dart';
+import 'package:expensive_tracker_app/src/features/weather/presentation/weather_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -63,6 +66,10 @@ void main() async {
             create: (context) =>
                 AuthBloc(context.read<AuthRepository>())..add(AppStarted()),
           ),
+          BlocProvider(
+              create: (context) =>
+                  WeatherBloc(context.read<WeatherRepository>())
+                    ..add(WeatherUser()))
         ],
         child: const ExpensiveTrackerApp(),
       ),
@@ -96,7 +103,7 @@ class ExpensiveTrackerApp extends StatelessWidget {
                 GlobalWidgetsLocalizations.delegate,
                 GlobalCupertinoLocalizations.delegate,
               ],
-              home: const AuthWrapper(),
+              home: const WeatherScreen(),
             );
           },
         );
