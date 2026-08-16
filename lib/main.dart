@@ -1,4 +1,5 @@
 import 'package:expensive_tracker_app/common_exports.dart';
+import 'package:expensive_tracker_app/src/features/student/presentation/student_screen.dart';
 import 'package:expensive_tracker_app/src/features/tasks/bloc/task_bloc.dart';
 import 'package:expensive_tracker_app/src/features/tasks/bloc/task_event.dart';
 import 'package:expensive_tracker_app/src/features/tasks/data/task_repository.dart';
@@ -110,7 +111,7 @@ class ExpensiveTrackerApp extends StatelessWidget {
                 GlobalWidgetsLocalizations.delegate,
                 GlobalCupertinoLocalizations.delegate,
               ],
-              home: const TaskScreen(),
+              home: const StudentScreen(),
             );
           },
         );
