@@ -1,4 +1,8 @@
 import 'package:expensive_tracker_app/common_exports.dart';
+import 'package:expensive_tracker_app/src/features/tasks/bloc/task_bloc.dart';
+import 'package:expensive_tracker_app/src/features/tasks/bloc/task_event.dart';
+import 'package:expensive_tracker_app/src/features/tasks/data/task_repository.dart';
+import 'package:expensive_tracker_app/src/features/tasks/presentation/task_screen.dart';
 import 'package:expensive_tracker_app/src/features/weather/bloc/weather_bloc.dart';
 import 'package:expensive_tracker_app/src/features/weather/data/weather_repository.dart';
 import 'package:expensive_tracker_app/src/features/weather/presentation/weather_screen.dart';
@@ -69,7 +73,10 @@ void main() async {
           BlocProvider(
               create: (context) =>
                   WeatherBloc(context.read<WeatherRepository>())
-                    ..add(WeatherUser()))
+                    ..add(WeatherUser())),
+          // BlocProvider(
+          //     create: (context) => TaskBloc(context.read<TaskRepository>())
+          //       ..add(LoadTaskEvent())),
         ],
         child: const ExpensiveTrackerApp(),
       ),
@@ -103,7 +110,7 @@ class ExpensiveTrackerApp extends StatelessWidget {
                 GlobalWidgetsLocalizations.delegate,
                 GlobalCupertinoLocalizations.delegate,
               ],
-              home: const WeatherScreen(),
+              home: const TaskScreen(),
             );
           },
         );
