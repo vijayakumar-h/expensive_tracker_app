@@ -45,12 +45,23 @@ class StudentView extends StatelessWidget {
         }
 
         return ListView.builder(
-            shrinkWrap: true,
-            itemCount: state.student.length,
-            itemBuilder: (context, index) {
-              final Student student = state.student.elementAt(index);
-              return Text(student.name);
-            });
+          shrinkWrap: true,
+          itemCount: state.student.length,
+          itemBuilder: (context, index) {
+            final Student student = state.student.elementAt(index);
+            return Card(
+              elevation: 0.0,
+              color: Colors.purple.shade50,
+              shape: OutlineInputBorder(
+                  borderRadius: BorderRadius.zero,
+                  borderSide: BorderSide(color: Colors.transparent)),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(student.name),
+              ),
+            );
+          },
+        );
       }),
     );
   }
